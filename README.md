@@ -18,8 +18,8 @@ Or on Windows, install python 3.7 or above, then type on the command line:
 
 Then on either platform, paste into the console:
 
-    curl --location --request POST http://localhost:8080/incoming --header "Content-Type: application/json" --data-raw "{ \"id\":\"652\", \"findDuplicates\":\"HereWeHaveSomeDuplicatedCharacters\", \"whiteSpacesGalore\":\"Can we replace all this white spaces without using replace please\", \"validateMeOnlyIActuallyShouldBeABoolean\":false,\"numbersMeetNumbers\":[35, 2, 100, 15, 75, 25, 99]}"
+    curl --location --request POST http://127.0.0.1:8080/incoming --header "Content-Type: application/json" --data-raw "{ \"id\":\"652\", \"findDuplicates\":\"HereWeHaveSomeDuplicatedCharacters\", \"whiteSpacesGalore\":\"Can we replace all this white spaces without using replace please\", \"validateMeOnlyIActuallyShouldBeABoolean\":false,\"numbersMeetNumbers\":[35, 2, 100, 15, 75, 25, 99]}"
 
 Then visit the following link with a web browser:
 
-> http://localhost:8080/outgoing
+> http://127.0.0.1:8080/outgoing
