@@ -23,6 +23,11 @@ import string
 from typing import List
 from fastapi import FastAPI
 from pydantic import BaseModel
+from pymongo import MongoClient
+
+
+client = MongoClient(port=27017)
+db = client.simple_rest
 
 
 app = FastAPI()
@@ -36,8 +41,27 @@ class Req(BaseModel):
     numbersMeetNumbers: List[int]
 
 
+@app.get("/")
+@app.get("/outgoing")
+async def outgoing():
+    """
+    View any previously queued requests,
+    clearing the "incoming" mongodb queue
+
+    :return: a JSON object with the processed values
+    """
+    r = list(db.simple_rest_table.find())
+
+    for i in r:
+        # ObjectId's aren't encodable by fastapi!
+        del i["_id"]
+
+    db.simple_rest_table.remove()
+    return r
+
+
 @app.post("/incoming")
-def incoming(req: Req):
+async def incoming(req: Req):
     """
     Do processing on the incoming POST data as per the problem
     detailed at the top of this file.
@@ -51,7 +75,8 @@ def incoming(req: Req):
     # Because the original example was a decimal in a string,
     # assume that alphabetic and floating point values are
     # not permissible
-    assert req.id.isdecimal()
+    my_id = req.id
+    assert my_id.isdecimal()
 
     # Record the positions of characters which are duplicates as
     # {character: [position 1, position 2, ...]}
@@ -70,16 +95,17 @@ def incoming(req: Req):
 
     # Validation should already have been performed
     # for both of these (boolean and a list of ints)
-    validateMeOnlyIActuallyShouldBeABoolean = req.validateMeOnlyIActuallyShouldBeABoolean
-    numbersMeetNumbers = req.numbersMeetNumbers
+    validateMeOnlyIActuallyShouldBeABoolean = bool(req.validateMeOnlyIActuallyShouldBeABoolean)
+    numbersMeetNumbers = [int(i) for i in req.numbersMeetNumbers]
 
     out = {
-        "id": id,
+        "originalId": my_id,
         "duplicatePositions": duplicates,
         "whiteSpacesRemoved": whiteSpacesGalore,
         "onlyBoolean": validateMeOnlyIActuallyShouldBeABoolean,
         "listOfIntegers": numbersMeetNumbers
     }
+    db.simple_rest_table.insert_one(out.copy())
     return out
 
 
