@@ -1,20 +1,21 @@
 # fast_api_test
 
-To run this assessment demo, type on Linux/Unix on the command line:
+To run this assessment demo on Windows, install python 3.7 or above, 
+then type on the command line:
 
 * install curl from https://curl.se/windows/ and mongo server from 
   https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
 * install mongo 
 * pip3 --upgrade pip
 * pip3 install -r requirements.txt
-* bash ./run_server.sh
+* run_server.bat
 
-Or on Windows, install python 3.7 or above, then type on the command line:
+Or on Linux/Unix,  then type on the command line:
 
 * install curl and mongodb using a package manager, e.g. `sudo apt install curl mongodb`
 * sudo pip3 --upgrade pip
 * sudo pip3 install -r requirements.txt 
-* run_server.bat
+* bash ./run_server.sh
 
 Then on either platform, paste into the console:
 
