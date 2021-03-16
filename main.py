@@ -28,17 +28,7 @@ from pymongo import MongoClient
 
 client = MongoClient(port=27017)
 db = client.simple_rest
-
-
 app = FastAPI()
-
-
-class Req(BaseModel):
-    id: str
-    findDuplicates: str
-    whiteSpacesGalore: str
-    validateMeOnlyIActuallyShouldBeABoolean: bool
-    numbersMeetNumbers: List[int]
 
 
 @app.get("/")
@@ -58,6 +48,14 @@ async def outgoing():
 
     db.simple_rest_table.remove()
     return r
+
+
+class Req(BaseModel):
+    id: str
+    findDuplicates: str
+    whiteSpacesGalore: str
+    validateMeOnlyIActuallyShouldBeABoolean: bool
+    numbersMeetNumbers: List[int]
 
 
 @app.post("/incoming")
